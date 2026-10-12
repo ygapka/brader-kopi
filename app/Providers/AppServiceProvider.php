@@ -23,5 +23,9 @@ class AppServiceProvider extends ServiceProvider
         if (app()->environment('production') || str_contains(request()->getHost(), 'vercel.app')) {
             URL::forceScheme('https');
         }
+
+        if (str_contains(request()->getHost(), 'vercel.app') || env('ASSET_URL')) {
+            config(['app.asset_url' => env('ASSET_URL', '/public')]);
+        }
     }
 }
