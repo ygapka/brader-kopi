@@ -6,13 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Menu;
 use App\Models\MenuVariant;
+use App\Services\SupabaseStorageService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class MenuController extends Controller
 {
+    public function __construct(
+        protected SupabaseStorageService $storageService
+    ) {}
+
     public function index(Request $request): View
     {
         $query = Menu::with(['category', 'variants'])->latest();
@@ -62,7 +66,7 @@ class MenuController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('menus', 'public');
+            $imagePath = $this->storageService->upload($request->file('image'));
         }
 
         $menu = Menu::create([
@@ -115,13 +119,13 @@ class MenuController extends Controller
 
         $imagePath = $menu->image;
         if ($request->hasFile('image')) {
-            if ($menu->image && Storage::disk('public')->exists($menu->image)) {
-                Storage::disk('public')->delete($menu->image);
+            if ($menu->image) {
+                $this->storageService->delete($menu->image);
             }
-            $imagePath = $request->file('image')->store('menus', 'public');
+            $imagePath = $this->storageService->upload($request->file('image'));
         } elseif ($request->boolean('remove_image')) {
-            if ($menu->image && Storage::disk('public')->exists($menu->image)) {
-                Storage::disk('public')->delete($menu->image);
+            if ($menu->image) {
+                $this->storageService->delete($menu->image);
             }
             $imagePath = null;
         }
@@ -171,8 +175,8 @@ class MenuController extends Controller
     {
         $name = $menu->name;
 
-        if ($menu->image && Storage::disk('public')->exists($menu->image)) {
-            Storage::disk('public')->delete($menu->image);
+        if ($menu->image) {
+            $this->storageService->delete($menu->image);
         }
 
         $menu->delete();

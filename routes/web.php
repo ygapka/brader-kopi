@@ -1,17 +1,17 @@
 <?php
 
+use App\Http\Controllers\Admin\CashierController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\KitchenController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CustomerOrderController;
 use App\Models\Table;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\CashierController;
-use App\Http\Controllers\Admin\KitchenController;
-use App\Http\Controllers\Admin\ReportController;
-use App\Http\Controllers\CustomerOrderController;
 
 /*
 |--------------------------------------------------------------------------

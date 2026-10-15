@@ -150,8 +150,8 @@
             @forelse($recentMenus as $menu)
                 <div class="p-4 flex items-center justify-between hover:bg-slate-50/60 transition">
                     <div class="flex items-center gap-3">
-                        @if($menu->image)
-                            <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}" class="w-11 h-11 rounded-xl object-cover border border-slate-200">
+                        @if($menu->image_url)
+                            <img src="{{ $menu->image_url }}" alt="{{ $menu->name }}" class="w-11 h-11 rounded-xl object-cover border border-slate-200">
                         @else
                             <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center border border-amber-100 font-bold">
                                 <i class="fa-solid fa-mug-hot"></i>

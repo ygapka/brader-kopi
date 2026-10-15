@@ -63,8 +63,8 @@
                 @forelse($menus as $menu)
                     <tr class="hover:bg-slate-50/60 transition">
                         <td class="py-3.5 px-5 w-16">
-                            @if($menu->image)
-                                <img src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}"
+                            @if($menu->image_url)
+                                <img src="{{ $menu->image_url }}" alt="{{ $menu->name }}"
                                      class="w-12 h-12 rounded-xl object-cover border border-slate-200 shadow-sm">
                             @else
                                 <div class="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-600 text-lg">

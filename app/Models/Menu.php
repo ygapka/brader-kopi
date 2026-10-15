@@ -22,12 +22,29 @@ class Menu extends Model
         'is_available',
     ];
 
+    protected $appends = [
+        'image_url',
+    ];
+
     protected function casts(): array
     {
         return [
             'price' => 'decimal:2',
             'is_available' => 'boolean',
         ];
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->image) {
+            return null;
+        }
+
+        if (str_starts_with($this->image, 'http://') || str_starts_with($this->image, 'https://')) {
+            return $this->image;
+        }
+
+        return asset('storage/'.$this->image);
     }
 
     public function category(): BelongsTo

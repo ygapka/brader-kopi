@@ -40,4 +40,10 @@ return [
         'token' => env('WA_API_TOKEN'),
     ],
 
+    'supabase' => [
+        'url' => env('SUPABASE_URL', 'https://utpdblpxntzbryidkvmu.supabase.co'),
+        'key' => env('SUPABASE_KEY'),
+        'bucket' => env('SUPABASE_BUCKET', 'menus'),
+    ],
+
 ];

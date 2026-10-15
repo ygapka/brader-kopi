@@ -102,8 +102,8 @@
             <div class="flex flex-col sm:flex-row items-center gap-6">
                 <!-- Preview box -->
                 <div class="w-32 h-32 rounded-2xl border-2 border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden shrink-0">
-                    @if($menu->image)
-                        <img id="imagePreview" src="{{ asset('storage/' . $menu->image) }}" alt="{{ $menu->name }}" class="w-full h-full object-cover">
+                    @if($menu->image_url)
+                        <img id="imagePreview" src="{{ $menu->image_url }}" alt="{{ $menu->name }}" class="w-full h-full object-cover">
                     @else
                         <div id="previewPlaceholder" class="text-center text-slate-400 p-2">
                             <i class="fa-solid fa-mug-saucer text-2xl mb-1 block"></i>
