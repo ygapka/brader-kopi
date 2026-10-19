@@ -59,7 +59,7 @@
                     </label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400 font-bold text-xs">Rp</span>
-                        <input type="number" id="price" name="price" value="{{ old('price') }}" required min="0" step="500" placeholder="25000"
+                        <input type="number" id="price" name="price" value="{{ old('price') }}" required min="0" step="1" placeholder="25000"
                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500">
                     </div>
                 </div>
@@ -174,7 +174,7 @@
             <div class="w-44">
                 <div class="relative">
                     <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400 font-bold text-[11px]">+Rp</span>
-                    <input type="number" name="variants[${variantIndex}][extra_price]" value="${price}" min="0" step="500" placeholder="0"
+                    <input type="number" name="variants[${variantIndex}][extra_price]" value="${price}" min="0" step="1" placeholder="0"
                            class="w-full pl-9 pr-3 py-2 rounded-lg border border-slate-300 text-xs text-slate-900 focus:outline-none focus:border-amber-500">
                 </div>
             </div>
