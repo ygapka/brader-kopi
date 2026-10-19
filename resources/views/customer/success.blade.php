@@ -1,115 +1,183 @@
 @extends('layouts.customer')
 
-@section('title', $order->status === 'paid' ? 'Pembayaran Berhasil' : 'Menunggu Pembayaran')
+@section('title', $order->status === 'paid' ? 'Pembayaran Berhasil' : 'Ringkasan & Pembayaran')
 
 @section('content')
-<div class="flex flex-col items-center justify-center min-h-[80vh] px-4 py-8 text-center">
+<div class="px-4 py-6 flex flex-col items-center">
     
     @if($order->status === 'paid')
-        <!-- Tampilan Jika Sudah Dibayar -->
-        <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-5 shadow-sm">
-            <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path>
-            </svg>
+        <!-- Tampilan Berhasil / Lunas -->
+        <div class="w-16 h-16 bg-emerald-500/15 text-emerald-600 rounded-3xl flex items-center justify-center mb-3 shadow-sm border border-emerald-500/20 animate-bounce">
+            <i class="fa-solid fa-circle-check text-3xl"></i>
         </div>
         
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 mb-2">
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300/50 mb-2">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Pembayaran Lunas
-        </span>
+            <span>Pembayaran Lunas</span>
+        </div>
         
-        <h1 class="text-2xl font-black text-gray-900 mb-2">Pembayaran Berhasil!</h1>
-        <p class="text-gray-600 text-sm max-w-sm mb-6">
-            Terima kasih, <span class="font-bold text-gray-900">{{ $order->customer_name }}</span>! Pembayaran Anda telah kami terima dan pesanan sedang segera disiapkan oleh barista.
+        <h1 class="text-2xl font-black text-espresso-950 mb-1 tracking-tight">Pembayaran Berhasil!</h1>
+        <p class="text-espresso-600 text-xs max-w-xs text-center mb-6 leading-relaxed">
+            Terima kasih, <strong class="text-espresso-900">{{ $order->customer_name }}</strong>! Pembayaran telah kami terima dan barista kami sedang menyiapkan pesanan Anda.
         </p>
     @else
-        <!-- Tampilan Jika Menunggu Pembayaran -->
-        <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-5 shadow-sm">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-            </svg>
+        <!-- Tampilan Menunggu Pembayaran -->
+        <div class="w-16 h-16 bg-amber-500/15 text-amber-600 rounded-3xl flex items-center justify-center mb-3 shadow-sm border border-amber-500/20">
+            <i class="fa-solid fa-receipt text-3xl"></i>
         </div>
 
-        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 mb-2">
-            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-            Menunggu Pembayaran
-        </span>
+        <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-800 border border-amber-300/50 mb-2">
+            <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+            <span>Menunggu Pembayaran</span>
+        </div>
 
-        <h1 class="text-2xl font-black text-gray-900 mb-2">Selesaikan Pembayaran</h1>
-        <p class="text-gray-600 text-sm max-w-sm mb-6">
-            Halo <span class="font-bold text-gray-900">{{ $order->customer_name }}</span>, silakan klik tombol di bawah untuk membayar via QRIS, GoPay, ShopeePay, atau Bank Transfer.
+        <h1 class="text-2xl font-black text-espresso-950 mb-1 tracking-tight">Ringkasan Pesanan</h1>
+        <p class="text-espresso-600 text-xs max-w-xs text-center mb-6 leading-relaxed">
+            Periksa pesanan meja Anda di bawah ini dan selesaikan pembayaran via QRIS / E-Wallet / Virtual Account.
         </p>
     @endif
 
-    <!-- Card Ringkasan Order -->
-    <div class="bg-white border border-gray-200 rounded-2xl w-full p-5 shadow-sm mb-6 text-left space-y-3">
-        <div class="flex justify-between items-center pb-3 border-b border-gray-100">
-            <span class="text-gray-500 text-xs uppercase font-medium tracking-wider">Nomor Order</span>
-            <span class="font-bold font-mono text-gray-800">{{ $order->order_number }}</span>
+    <!-- Card Struk Digital Modern -->
+    <div class="w-full bg-white rounded-3xl border border-cream-200 shadow-md shadow-espresso-950/5 overflow-hidden mb-5">
+        <!-- Top Receipt Brand Bar -->
+        <div class="bg-espresso-950 px-5 py-4 text-cream-50 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-lg bg-amber-600 flex items-center justify-center text-white text-xs">
+                    <i class="fa-solid fa-mug-hot"></i>
+                </div>
+                <div>
+                    <h3 class="text-xs font-extrabold tracking-tight text-white uppercase">Brader Cafe</h3>
+                    <p class="text-[9px] text-cream-300">Struk Pesanan Digital</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <span class="text-[10px] text-cream-400 font-mono block">Order ID</span>
+                <span class="text-xs font-bold font-mono text-amber-400">{{ $order->order_number }}</span>
+            </div>
         </div>
-        <div class="flex justify-between items-center pb-3 border-b border-gray-100">
-            <span class="text-gray-500 text-xs uppercase font-medium tracking-wider">Meja</span>
-            <span class="font-bold text-gray-800">Meja {{ $table->table_number }}</span>
+
+        <!-- Info Grid -->
+        <div class="p-5 border-b border-cream-200/80 bg-cream-50/50 grid grid-cols-2 gap-3 text-xs">
+            <div>
+                <span class="text-[10px] uppercase font-bold text-espresso-500 tracking-wider block">Pelanggan</span>
+                <span class="font-bold text-espresso-900 block truncate">{{ $order->customer_name }}</span>
+                <span class="text-[11px] text-espresso-600 font-mono">{{ $order->customer_whatsapp }}</span>
+            </div>
+            <div class="text-right">
+                <span class="text-[10px] uppercase font-bold text-espresso-500 tracking-wider block">Lokasi Meja</span>
+                <div class="inline-flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-800 px-2.5 py-1 rounded-full font-extrabold text-xs mt-0.5">
+                    <i class="fa-solid fa-chair text-[10px]"></i>
+                    <span>Meja {{ $table->table_number }}</span>
+                </div>
+            </div>
         </div>
-        <div class="flex justify-between items-center pb-3 border-b border-gray-100">
-            <span class="text-gray-500 text-xs uppercase font-medium tracking-wider">Nomor WhatsApp</span>
-            <span class="font-medium text-gray-800">{{ $order->customer_whatsapp }}</span>
-        </div>
-        
-        <!-- Rincian Item Singkat -->
-        <div class="py-2">
-            <span class="text-gray-500 text-xs uppercase font-medium tracking-wider block mb-2">Rincian Menu</span>
-            <div class="space-y-1.5">
+
+        <!-- Order Items Detail -->
+        <div class="p-5 space-y-3">
+            <span class="text-[10px] uppercase font-bold text-espresso-500 tracking-wider block mb-2">Rincian Menu</span>
+            
+            <div class="space-y-2.5 divide-y divide-cream-100">
                 @foreach($order->items as $item)
-                    <div class="flex justify-between text-xs text-gray-700">
-                        <span>{{ $item->quantity }}x {{ $item->menu->name ?? 'Menu' }} {{ $item->variant_name ? '('.$item->variant_name.')' : '' }}</span>
-                        <span class="font-medium text-gray-900">Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}</span>
+                    <div class="pt-2 first:pt-0 flex items-start justify-between text-xs">
+                        <div class="flex-grow pr-3">
+                            <div class="font-extrabold text-espresso-950 flex items-center gap-1.5">
+                                <span class="text-amber-700 font-black">{{ $item->quantity }}x</span>
+                                <span>{{ $item->menu->name ?? 'Menu' }}</span>
+                            </div>
+                            @if($item->variant_name)
+                                <span class="inline-block text-[10px] font-semibold text-amber-800 bg-amber-500/10 px-1.5 py-0.2 rounded mt-0.5">
+                                    {{ $item->variant_name }}
+                                </span>
+                            @endif
+                            @if($item->notes)
+                                <p class="text-[10px] text-espresso-500 italic mt-0.5">"{{ $item->notes }}"</p>
+                            @endif
+                        </div>
+                        <div class="text-right font-black text-espresso-950 shrink-0">
+                            Rp {{ number_format($item->price * $item->quantity, 0, ',', '.') }}
+                        </div>
                     </div>
                 @endforeach
             </div>
         </div>
 
-        <div class="flex justify-between items-center pt-3 border-t border-gray-200">
-            <span class="text-gray-800 font-bold text-sm">Total Tagihan</span>
-            <span class="font-black text-orange-600 text-xl">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</span>
+        <!-- Total Calculation -->
+        <div class="p-5 bg-cream-100/60 border-t border-cream-200">
+            <div class="flex items-center justify-between text-xs text-espresso-700 mb-1.5">
+                <span>Subtotal Item</span>
+                <span class="font-bold text-espresso-900">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</span>
+            </div>
+            <div class="flex items-center justify-between text-xs text-espresso-700 mb-3">
+                <span>Biaya Layanan & Pajak</span>
+                <span class="font-bold text-emerald-700">Rp 0 (Termasuk)</span>
+            </div>
+            <div class="pt-2.5 border-t border-cream-300 flex items-center justify-between">
+                <div>
+                    <span class="text-xs font-extrabold text-espresso-950 block">Total Pembayaran</span>
+                    <span class="text-[10px] text-espresso-500">Harga final yang harus dibayar</span>
+                </div>
+                <span class="text-xl font-black text-amber-700">
+                    Rp {{ number_format($order->total_amount, 0, ',', '.') }}
+                </span>
+            </div>
         </div>
     </div>
 
-    <!-- Tombol Aksi Pembayaran -->
+    <!-- Section Aksi Pembayaran Midtrans -->
     @if($order->status === 'pending_payment')
-        @if(!empty($snapToken))
-            <button id="pay-button" type="button" 
-                    class="w-full bg-orange-600 hover:bg-orange-700 active:bg-orange-800 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-orange-500/20 transition-all flex items-center justify-center gap-3 text-base mb-3 cursor-pointer">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                </svg>
-                <span>Bayar Sekarang (Midtrans)</span>
-            </button>
-        @else
-            <div class="p-4 bg-amber-50 border border-amber-200 rounded-xl text-amber-800 text-xs mb-3 text-left">
-                Token pembayaran Midtrans sedang diproses atau terjadi gangguan koneksi. Silakan hubungi kasir untuk melakukan pembayaran manual.
-            </div>
-        @endif
+        <div class="w-full space-y-3 mb-6">
+            @if(!empty($snapToken))
+                <button id="pay-button" type="button" 
+                        class="w-full bg-amber-600 hover:bg-amber-700 active:scale-[0.99] text-white font-extrabold py-4 px-6 rounded-2xl shadow-lg shadow-amber-600/30 transition-all flex items-center justify-center gap-3 text-sm cursor-pointer">
+                    <i class="fa-solid fa-qrcode text-lg"></i>
+                    <span>Bayar Sekarang (Midtrans)</span>
+                </button>
 
-        <p class="text-xs text-gray-500 mb-6">
-            Anda juga dapat membayar secara langsung di kasir dengan menyebutkan <strong class="text-gray-700">Nomor Order</strong> di atas.
-        </p>
+                <!-- Supported Payment Channels Icons -->
+                <div class="bg-white rounded-2xl p-3.5 border border-cream-200 shadow-2xs">
+                    <p class="text-[10px] font-bold text-espresso-500 uppercase tracking-wider text-center mb-2">
+                        Pilihan Metode Pembayaran Otomatis
+                    </p>
+                    <div class="flex items-center justify-center gap-3 text-espresso-600 text-xs flex-wrap">
+                        <span class="bg-cream-100 px-2.5 py-1 rounded-lg font-bold border border-cream-200">QRIS</span>
+                        <span class="bg-cream-100 px-2.5 py-1 rounded-lg font-bold border border-cream-200">GoPay</span>
+                        <span class="bg-cream-100 px-2.5 py-1 rounded-lg font-bold border border-cream-200">ShopeePay</span>
+                        <span class="bg-cream-100 px-2.5 py-1 rounded-lg font-bold border border-cream-200">BCA VA</span>
+                        <span class="bg-cream-100 px-2.5 py-1 rounded-lg font-bold border border-cream-200">BNI / Mandiri</span>
+                    </div>
+                </div>
+
+                <!-- Real-time Polling Status Indicator -->
+                <div class="flex items-center justify-center gap-2 text-[11px] text-espresso-500 py-1">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                    <span>Sistem mendeteksi status pembayaran secara otomatis...</span>
+                </div>
+            @else
+                <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-amber-800 text-xs text-left">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600 mr-1.5"></i>
+                    Token pembayaran Midtrans sedang dipersiapkan. Anda juga dapat langsung membayar tunai ke kasir dengan menyebutkan Order ID di atas.
+                </div>
+            @endif
+        </div>
     @else
-        <div class="w-full p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-emerald-800 text-xs mb-6 text-left flex items-start gap-3">
-            <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
+        <!-- Struk WhatsApp Delivery Card -->
+        <div class="w-full p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-emerald-900 text-xs mb-6 text-left flex items-start gap-3">
+            <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5">
+                <i class="fa-brands fa-whatsapp text-lg"></i>
+            </div>
             <div>
-                <p class="font-bold mb-0.5">Struk Resmi Dikirimkan</p>
-                <p class="text-emerald-700">Bukti pembayaran telah dikirimkan secara otomatis via WhatsApp ke nomor <span class="font-semibold">{{ $order->customer_whatsapp }}</span>.</p>
+                <p class="font-extrabold text-sm mb-0.5">Struk Resmi Terkirim</p>
+                <p class="text-emerald-800 leading-relaxed">
+                    Bukti pembayaran otomatis telah dikirim ke nomor WhatsApp <strong class="font-bold">{{ $order->customer_whatsapp }}</strong>.
+                </p>
             </div>
         </div>
     @endif
 
-    <a href="{{ route('order.show', $token) }}" class="inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-orange-600 transition-colors">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-        </svg>
+    <!-- Back to Menu Button -->
+    <a href="{{ route('order.show', $token) }}" 
+       class="inline-flex items-center gap-2 text-xs font-extrabold text-espresso-700 hover:text-amber-700 bg-white border border-cream-300/80 px-5 py-2.5 rounded-full shadow-2xs transition">
+        <i class="fa-solid fa-arrow-left"></i>
         <span>Pesan Menu Lainnya</span>
     </a>
 
@@ -140,7 +208,6 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.is_paid || data.status === 'paid') {
-                            // Hentikan interval dan otomatis reload ke halaman sukses/lunas
                             if (window.paymentInterval) clearInterval(window.paymentInterval);
                             window.location.reload();
                         }
@@ -151,7 +218,7 @@
                     });
             }
 
-            // Polling otomatis setiap 2 detik untuk mendeteksi pembayaran dari QRIS/Simulator
+            // Polling otomatis setiap 2 detik
             window.paymentInterval = setInterval(checkPaymentStatus, 2000);
 
             if (payButton && window.snap) {
@@ -169,7 +236,6 @@
                             checkPaymentStatus();
                         },
                         onClose: function () {
-                            // Jika pop-up ditutup, langsung cek apakah user sudah selesai bayar
                             checkPaymentStatus();
                         }
                     });

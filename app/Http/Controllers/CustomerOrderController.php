@@ -36,10 +36,8 @@ class CustomerOrderController extends Controller
         // Simpan meja ke session
         session(['table_id' => $table->id]);
 
-        // Ambil kategori beserta menu yang aktif dan variannya
-        $categories = Category::with(['menus' => function ($query) {
-            $query->where('is_available', true)->with('variants');
-        }])->get();
+        // Ambil kategori beserta seluruh menu dan variannya (status habis/tersedia ditampilkan di katalog)
+        $categories = Category::with(['menus.variants'])->get();
 
         return view('customer.menu', compact('table', 'categories', 'token'));
     }
@@ -74,6 +72,10 @@ class CustomerOrderController extends Controller
 
             foreach ($items as $item) {
                 $menu = Menu::findOrFail($item['menu_id']);
+
+                if (! $menu->is_available) {
+                    throw new \Exception('Menu "'.$menu->name.'" saat ini sedang habis.');
+                }
 
                 // Base price
                 $price = $menu->price;
