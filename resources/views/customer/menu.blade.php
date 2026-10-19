@@ -339,7 +339,7 @@
                         </div>
                         <div>
                             <h2 class="text-base font-extrabold text-espresso-950 leading-none">Keranjang Pesanan</h2>
-                            <p class="text-[10px] text-espresso-500 mt-0.5">Meja {{ $table->table_number }} &bull; Periksa pesanan Anda</p>
+                            <p class="text-[10px] text-espresso-500 mt-0.5">{{ $table->display_name }} &bull; Periksa pesanan Anda</p>
                         </div>
                     </div>
                     <button @click="isCartModalOpen = false" class="w-8 h-8 rounded-full bg-cream-100 text-espresso-700 hover:bg-cream-200 flex items-center justify-center transition cursor-pointer">
@@ -397,12 +397,14 @@
                                 <label class="block text-[11px] font-bold text-espresso-900 uppercase tracking-wider mb-1">
                                     Nama Pemesan <span class="text-rose-500">*</span>
                                 </label>
-                                <div class="relative">
-                                    <i class="fa-solid fa-user absolute left-3 top-1/2 -translate-y-1/2 text-espresso-400 text-xs"></i>
+                                <div class="relative flex items-center">
+                                    <span class="absolute left-3.5 flex items-center pointer-events-none text-espresso-400 text-xs">
+                                        <i class="fa-solid fa-user"></i>
+                                    </span>
                                     <input type="text" 
                                            name="customer_name" 
                                            required 
-                                           class="w-full bg-white border border-cream-300 rounded-xl pl-8.5 pr-3 py-2 text-xs text-espresso-900 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500" 
+                                           class="w-full bg-white border border-cream-300 rounded-xl pl-10 pr-3 py-2.5 text-xs text-espresso-900 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition shadow-2xs" 
                                            placeholder="Masukkan nama lengkap Anda" 
                                            x-model="customerName">
                                 </div>
@@ -413,9 +415,9 @@
                                     <label class="block text-[11px] font-bold text-espresso-900 uppercase tracking-wider mb-1">
                                         Nomor Meja
                                     </label>
-                                    <div class="flex items-center gap-2 bg-cream-200/70 border border-cream-300 rounded-xl px-3 py-2 text-xs font-extrabold text-espresso-900">
+                                    <div class="flex items-center gap-2 bg-cream-200/70 border border-cream-300 rounded-xl px-3 py-2.5 text-xs font-extrabold text-espresso-900">
                                         <i class="fa-solid fa-chair text-amber-600"></i>
-                                        <span>Meja {{ $table->table_number }}</span>
+                                        <span>{{ $table->display_name }}</span>
                                     </div>
                                 </div>
 
@@ -423,12 +425,14 @@
                                     <label class="block text-[11px] font-bold text-espresso-900 uppercase tracking-wider mb-1">
                                         WhatsApp <span class="text-rose-500">*</span>
                                     </label>
-                                    <div class="relative">
-                                        <i class="fa-brands fa-whatsapp absolute left-3 top-1/2 -translate-y-1/2 text-emerald-600 text-xs"></i>
+                                    <div class="relative flex items-center">
+                                        <span class="absolute left-3.5 flex items-center pointer-events-none text-emerald-600 text-xs">
+                                            <i class="fa-brands fa-whatsapp"></i>
+                                        </span>
                                         <input type="tel" 
                                                name="customer_whatsapp" 
                                                required 
-                                               class="w-full bg-white border border-cream-300 rounded-xl pl-8.5 pr-3 py-2 text-xs text-espresso-900 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500" 
+                                               class="w-full bg-white border border-cream-300 rounded-xl pl-10 pr-3 py-2.5 text-xs text-espresso-900 focus:outline-none focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 transition shadow-2xs" 
                                                placeholder="08123456789" 
                                                x-model="customerWhatsapp">
                                     </div>

@@ -90,7 +90,7 @@
                                 <div class="flex items-center gap-2 mt-1">
                                     <span class="inline-flex items-center gap-1 bg-amber-500/10 text-amber-800 text-[11px] font-extrabold px-2 py-0.5 rounded-md border border-amber-500/20">
                                         <i class="fa-solid fa-chair text-[10px]"></i>
-                                        <span>Meja {{ $order->table->table_number ?? '0' }}</span>
+                                        <span>{{ $order->table->display_name ?? 'Meja ' . ($order->table->table_number ?? '0') }}</span>
                                     </span>
                                     <span class="text-[11px] text-espresso-600 font-medium truncate max-w-[100px]">{{ $order->customer_name }}</span>
                                 </div>
@@ -182,7 +182,7 @@
                                 <div class="flex items-center gap-2 mt-1">
                                     <span class="inline-flex items-center gap-1 bg-blue-500/10 text-blue-800 text-[11px] font-extrabold px-2 py-0.5 rounded-md border border-blue-500/20">
                                         <i class="fa-solid fa-chair text-[10px]"></i>
-                                        <span>Meja {{ $order->table->table_number ?? '0' }}</span>
+                                        <span>{{ $order->table->display_name ?? 'Meja ' . ($order->table->table_number ?? '0') }}</span>
                                     </span>
                                     <span class="text-[11px] text-espresso-600 font-medium truncate max-w-[100px]">{{ $order->customer_name }}</span>
                                 </div>
@@ -274,7 +274,7 @@
                                 <div class="flex items-center gap-2 mt-1">
                                     <span class="inline-flex items-center gap-1 bg-emerald-500/10 text-emerald-800 text-[11px] font-extrabold px-2 py-0.5 rounded-md border border-emerald-500/20">
                                         <i class="fa-solid fa-chair text-[10px]"></i>
-                                        <span>Meja {{ $order->table->table_number ?? '0' }}</span>
+                                        <span>{{ $order->table->display_name ?? 'Meja ' . ($order->table->table_number ?? '0') }}</span>
                                     </span>
                                     <span class="text-[11px] text-espresso-600 font-medium truncate max-w-[100px]">{{ $order->customer_name }}</span>
                                 </div>

@@ -67,7 +67,7 @@
                 <span class="text-[10px] uppercase font-bold text-espresso-500 tracking-wider block">Lokasi Meja</span>
                 <div class="inline-flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-800 px-2.5 py-1 rounded-full font-extrabold text-xs mt-0.5">
                     <i class="fa-solid fa-chair text-[10px]"></i>
-                    <span>Meja {{ $table->table_number }}</span>
+                    <span>{{ $table->display_name }}</span>
                 </div>
             </div>
         </div>

@@ -100,7 +100,7 @@
             @if(isset($table))
             <div class="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-800 text-xs font-bold px-3 py-1.5 rounded-full shadow-xs">
                 <span class="w-2 h-2 rounded-full bg-amber-600 animate-pulse"></span>
-                <span>Meja {{ $table->table_number }}</span>
+                <span>{{ $table->display_name }}</span>
             </div>
             @endif
         </div>

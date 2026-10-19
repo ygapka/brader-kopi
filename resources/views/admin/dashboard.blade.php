@@ -206,7 +206,7 @@
                                 <span class="font-mono font-black text-espresso-950 block">{{ $order->order_number }}</span>
                                 <span class="inline-flex items-center gap-1 text-[10px] font-bold text-amber-800 bg-amber-500/10 px-2 py-0.2 rounded mt-0.5">
                                     <i class="fa-solid fa-chair text-[9px]"></i>
-                                    <span>Meja {{ $order->table->table_number ?? '0' }}</span>
+                                    <span>{{ $order->table->display_name ?? 'Meja ' . ($order->table->table_number ?? '0') }}</span>
                                 </span>
                             </td>
 
@@ -323,7 +323,7 @@
                                 {{ $table->table_number }}
                             </div>
                             <div>
-                                <p class="text-xs font-bold text-espresso-950">Meja {{ $table->table_number }}</p>
+                                <p class="text-xs font-bold text-espresso-950">{{ $table->display_name }}</p>
                                 <p class="text-[10px] text-espresso-400 font-mono">Token: {{ substr($table->token, 0, 12) }}...</p>
                             </div>
                         </div>
