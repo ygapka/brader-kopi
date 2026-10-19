@@ -159,6 +159,8 @@ class MidtransPaymentTest extends TestCase
         $mockMidtrans->shouldReceive('getSnapToken')
             ->once()
             ->andReturn('dummy-snap-token-abc12345');
+        $mockMidtrans->shouldReceive('checkAndUpdateStatus')
+            ->andReturn('pending_payment');
 
         $table = Table::create([
             'table_number' => '03',
@@ -221,5 +223,34 @@ class MidtransPaymentTest extends TestCase
         $paidResponse->assertSee('Pembayaran Berhasil!');
         $paidResponse->assertSee('Pembayaran Lunas');
         $paidResponse->assertDontSee('Bayar Sekarang (Midtrans)');
+    }
+
+    public function test_check_status_endpoint_returns_json(): void
+    {
+        $table = Table::create([
+            'table_number' => '04',
+            'token' => 'table-token-04',
+            'is_active' => true,
+        ]);
+
+        $order = Order::create([
+            'order_number' => 'ORD-CHECKSTATUS',
+            'table_id' => $table->id,
+            'customer_name' => 'Bambang',
+            'customer_whatsapp' => '081234567899',
+            'total_amount' => 10000.00,
+            'status' => 'pending_payment',
+        ]);
+
+        $response = $this->getJson(route('order.check_status', [
+            'token' => $table->token,
+            'order' => $order->id,
+        ]));
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'status' => 'pending_payment',
+            'is_paid' => false,
+        ]);
     }
 }

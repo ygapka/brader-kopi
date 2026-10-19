@@ -67,6 +67,7 @@ Route::get('/order/{token}', [CustomerOrderController::class, 'index'])->name('o
 Route::get('/table/{token}', [CustomerOrderController::class, 'index'])->name('table.show');
 Route::post('/order/{token}/checkout', [CustomerOrderController::class, 'checkout'])->name('order.checkout');
 Route::get('/order/{token}/success/{order}', [CustomerOrderController::class, 'success'])->name('order.success');
+Route::get('/order/{token}/check-status/{order}', [CustomerOrderController::class, 'checkStatus'])->name('order.check_status');
 
 // Webhook Midtrans (juga tersedia di /api/midtrans/callback)
 Route::post('/midtrans/callback', [MidtransController::class, 'callback']);

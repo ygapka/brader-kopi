@@ -117,37 +117,62 @@
 @endsection
 
 @push('scripts')
-@if($order->status === 'pending_payment' && !empty($snapToken))
+@if($order->status === 'pending_payment')
     @php
         $snapUrl = config('midtrans.is_production')
             ? 'https://app.midtrans.com/snap/snap.js'
             : 'https://app.sandbox.midtrans.com/snap/snap.js';
     @endphp
-    <script src="{{ $snapUrl }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
+    @if(!empty($snapToken))
+        <script src="{{ $snapUrl }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
+    @endif
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const payButton = document.getElementById('pay-button');
-            if (payButton) {
+            const checkUrl = "{{ route('order.check_status', ['token' => $token, 'order' => $order->id]) }}";
+            let isChecking = false;
+
+            function checkPaymentStatus() {
+                if (isChecking) return;
+                isChecking = true;
+
+                fetch(checkUrl, { cache: 'no-store' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.is_paid || data.status === 'paid') {
+                            // Hentikan interval dan otomatis reload ke halaman sukses/lunas
+                            if (window.paymentInterval) clearInterval(window.paymentInterval);
+                            window.location.reload();
+                        }
+                    })
+                    .catch(() => {})
+                    .finally(() => {
+                        isChecking = false;
+                    });
+            }
+
+            // Polling otomatis setiap 2 detik untuk mendeteksi pembayaran dari QRIS/Simulator
+            window.paymentInterval = setInterval(checkPaymentStatus, 2000);
+
+            if (payButton && window.snap) {
                 payButton.addEventListener('click', function () {
-                    if (window.snap) {
-                        window.snap.pay('{{ $snapToken }}', {
-                            onSuccess: function (result) {
-                                window.location.reload();
-                            },
-                            onPending: function (result) {
-                                window.location.reload();
-                            },
-                            onError: function (result) {
-                                alert('Pembayaran gagal atau terjadi kesalahan. Silakan coba kembali.');
-                                window.location.reload();
-                            },
-                            onClose: function () {
-                                // Pengguna menutup pop-up Snap sebelum menyelesaikan pembayaran
-                            }
-                        });
-                    } else {
-                        alert('Midtrans Snap SDK gagal dimuat. Pastikan koneksi internet aktif.');
-                    }
+                    window.snap.pay('{{ $snapToken }}', {
+                        onSuccess: function (result) {
+                            checkPaymentStatus();
+                            setTimeout(function () { window.location.reload(); }, 1000);
+                        },
+                        onPending: function (result) {
+                            checkPaymentStatus();
+                        },
+                        onError: function (result) {
+                            alert('Pembayaran gagal atau dibatalkan.');
+                            checkPaymentStatus();
+                        },
+                        onClose: function () {
+                            // Jika pop-up ditutup, langsung cek apakah user sudah selesai bayar
+                            checkPaymentStatus();
+                        }
+                    });
                 });
             }
         });

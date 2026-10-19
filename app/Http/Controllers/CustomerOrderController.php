@@ -8,6 +8,7 @@ use App\Models\MenuVariant;
 use App\Models\Order;
 use App\Models\Table;
 use App\Services\MidtransService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -156,6 +157,12 @@ class CustomerOrderController extends Controller
 
         $order->loadMissing(['items.menu', 'table']);
 
+        // Jika masih pending_payment, periksa apakah di Midtrans sudah dibayar
+        if ($order->status === 'pending_payment') {
+            $this->midtransService->checkAndUpdateStatus($order);
+            $order->refresh();
+        }
+
         // Jika snap_token belum dibuat dan pesanan belum dibayar, coba generate
         if (empty($order->snap_token) && $order->status === 'pending_payment') {
             $snapToken = $this->midtransService->getSnapToken($order);
@@ -167,5 +174,23 @@ class CustomerOrderController extends Controller
         $snapToken = $order->snap_token;
 
         return view('customer.success', compact('order', 'table', 'token', 'snapToken'));
+    }
+
+    /**
+     * Cek status pembayaran real-time via AJAX polling.
+     */
+    public function checkStatus(string $token, Order $order): JsonResponse
+    {
+        $table = Table::where('token', $token)->firstOrFail();
+        if ($order->table_id !== $table->id) {
+            return response()->json(['error' => 'Meja tidak valid'], 403);
+        }
+
+        $status = $this->midtransService->checkAndUpdateStatus($order);
+
+        return response()->json([
+            'status' => $status,
+            'is_paid' => $status === 'paid',
+        ]);
     }
 }
