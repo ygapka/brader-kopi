@@ -13,6 +13,10 @@ class DashboardController extends Controller
 {
     public function index(): View
     {
+        if (auth()->user()?->role !== 'admin') {
+            abort(403, 'Akses dashboard hanya untuk Administrator.');
+        }
+
         $totalTables = Table::count();
         $activeTables = Table::where('is_active', true)->count();
         $totalCategories = Category::count();

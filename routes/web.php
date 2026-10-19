@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CustomerOrderController;
+use App\Http\Controllers\MidtransController;
 use App\Models\Table;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -66,3 +67,7 @@ Route::get('/order/{token}', [CustomerOrderController::class, 'index'])->name('o
 Route::get('/table/{token}', [CustomerOrderController::class, 'index'])->name('table.show');
 Route::post('/order/{token}/checkout', [CustomerOrderController::class, 'checkout'])->name('order.checkout');
 Route::get('/order/{token}/success/{order}', [CustomerOrderController::class, 'success'])->name('order.success');
+
+// Webhook Midtrans (juga tersedia di /api/midtrans/callback)
+Route::post('/midtrans/callback', [MidtransController::class, 'callback']);
+Route::post('/api/midtrans/callback', [MidtransController::class, 'callback']);

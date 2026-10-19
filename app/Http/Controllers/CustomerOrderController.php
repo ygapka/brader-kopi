@@ -7,12 +7,17 @@ use App\Models\Menu;
 use App\Models\MenuVariant;
 use App\Models\Order;
 use App\Models\Table;
+use App\Services\MidtransService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class CustomerOrderController extends Controller
 {
+    public function __construct(
+        protected MidtransService $midtransService
+    ) {}
+
     /**
      * Tampilkan halaman katalog menu untuk meja tertentu.
      */
@@ -123,6 +128,12 @@ class CustomerOrderController extends Controller
 
             DB::commit();
 
+            // Generate Midtrans Snap Token
+            $snapToken = $this->midtransService->getSnapToken($order);
+            if ($snapToken) {
+                $order->update(['snap_token' => $snapToken]);
+            }
+
             return redirect()->route('order.success', ['token' => $token, 'order' => $order->id]);
 
         } catch (\Exception $e) {
@@ -143,6 +154,18 @@ class CustomerOrderController extends Controller
             abort(404);
         }
 
-        return view('customer.success', compact('order', 'table', 'token'));
+        $order->loadMissing(['items.menu', 'table']);
+
+        // Jika snap_token belum dibuat dan pesanan belum dibayar, coba generate
+        if (empty($order->snap_token) && $order->status === 'pending_payment') {
+            $snapToken = $this->midtransService->getSnapToken($order);
+            if ($snapToken) {
+                $order->update(['snap_token' => $snapToken]);
+            }
+        }
+
+        $snapToken = $order->snap_token;
+
+        return view('customer.success', compact('order', 'table', 'token', 'snapToken'));
     }
 }

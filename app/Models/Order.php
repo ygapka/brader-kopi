@@ -20,6 +20,7 @@ class Order extends Model
         'customer_name',
         'customer_whatsapp',
         'total_amount',
+        'snap_token',
         'status',
     ];
 
