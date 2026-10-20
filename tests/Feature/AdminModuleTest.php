@@ -53,6 +53,29 @@ class AdminModuleTest extends TestCase
         $response->assertStatus(403);
     }
 
+    public function test_kasir_can_access_cashier_station(): void
+    {
+        $response = $this->actingAs($this->kasir)->get('/admin/cashier');
+        $response->assertStatus(200);
+        $response->assertSee('Stasiun Kasir');
+    }
+
+    public function test_kasir_login_redirects_to_cashier_station(): void
+    {
+        $response = $this->post('/login', [
+            'email' => 'kasir@bradercafe.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect(route('admin.cashier.index'));
+    }
+
+    public function test_kasir_visiting_home_redirects_to_cashier_station(): void
+    {
+        $response = $this->actingAs($this->kasir)->get('/');
+        $response->assertRedirect(route('admin.cashier.index'));
+    }
+
     public function test_admin_can_access_dashboard(): void
     {
         $response = $this->actingAs($this->admin)->get('/admin');

@@ -16,7 +16,11 @@ class LoginController extends Controller
     public function showLoginForm(): View|RedirectResponse
     {
         if (Auth::check()) {
-            return redirect()->route('admin.dashboard');
+            return match (Auth::user()?->role) {
+                'kasir' => redirect()->route('admin.cashier.index'),
+                'dapur' => redirect()->route('admin.kitchen.index'),
+                default => redirect()->route('admin.dashboard'),
+            };
         }
 
         return view('auth.login');
@@ -41,8 +45,15 @@ class LoginController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('admin.dashboard'))
-                ->with('success', 'Selamat datang kembali, '.Auth::user()->name.'!');
+            $user = Auth::user();
+            $targetRoute = match ($user?->role) {
+                'kasir' => route('admin.cashier.index'),
+                'dapur' => route('admin.kitchen.index'),
+                default => route('admin.dashboard'),
+            };
+
+            return redirect()->intended($targetRoute)
+                ->with('success', 'Selamat datang kembali, '.$user->name.'!');
         }
 
         return back()->withErrors([

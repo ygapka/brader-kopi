@@ -20,10 +20,14 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Halaman utama: redirect sesuai status login
+// Halaman utama: redirect sesuai status login dan peran (role)
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect()->route('admin.dashboard');
+        return match (Auth::user()?->role) {
+            'kasir' => redirect()->route('admin.cashier.index'),
+            'dapur' => redirect()->route('admin.kitchen.index'),
+            default => redirect()->route('admin.dashboard'),
+        };
     }
 
     return redirect()->route('login');

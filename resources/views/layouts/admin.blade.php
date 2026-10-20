@@ -115,6 +115,7 @@
             <!-- Navigation Links (Scrollbar hidden) -->
             <div class="flex-1 flex flex-col justify-between overflow-y-auto no-scrollbar px-4 py-5">
                 <nav class="space-y-1.5">
+                    @if(Auth::user()?->role === 'admin')
                     <p class="px-3 text-[10px] font-extrabold tracking-wider text-espresso-400 uppercase mb-2">Utama</p>
                     
                     <a href="{{ route('admin.dashboard') }}" 
@@ -122,33 +123,16 @@
                         <i class="fa-solid fa-chart-pie w-4 text-center {{ request()->routeIs('admin.dashboard') ? 'text-white' : 'text-amber-500' }}"></i>
                         <span>Dashboard Utama</span>
                     </a>
+                    @endif
 
-                    <p class="px-3 text-[10px] font-extrabold tracking-wider text-espresso-400 uppercase mt-5 mb-2">Katalog & Menu</p>
-
-                    <a href="{{ route('admin.categories.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.categories.*') ? 'bg-amber-600 text-white shadow-md shadow-amber-600/25' : 'text-cream-300 hover:bg-espresso-850 hover:text-white' }}">
-                        <i class="fa-solid fa-tags w-4 text-center {{ request()->routeIs('admin.categories.*') ? 'text-white' : 'text-amber-500' }}"></i>
-                        <span>Kategori Menu</span>
-                    </a>
-
-                    <a href="{{ route('admin.menus.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.menus.*') ? 'bg-amber-600 text-white shadow-md shadow-amber-600/25' : 'text-cream-300 hover:bg-espresso-850 hover:text-white' }}">
-                        <i class="fa-solid fa-utensils w-4 text-center {{ request()->routeIs('admin.menus.*') ? 'text-white' : 'text-amber-500' }}"></i>
-                        <span>Menu & Varian</span>
-                    </a>
-
-                    <p class="px-3 text-[10px] font-extrabold tracking-wider text-espresso-400 uppercase mt-5 mb-2">Operasional</p>
-
-                    <a href="{{ route('admin.tables.index') }}" 
-                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.tables.*') ? 'bg-amber-600 text-white shadow-md shadow-amber-600/25' : 'text-cream-300 hover:bg-espresso-850 hover:text-white' }}">
-                        <i class="fa-solid fa-qrcode w-4 text-center {{ request()->routeIs('admin.tables.*') ? 'text-white' : 'text-amber-500' }}"></i>
-                        <span>Meja & QR Code</span>
-                    </a>
+                    <p class="px-3 text-[10px] font-extrabold tracking-wider text-espresso-400 uppercase {{ Auth::user()?->role === 'admin' ? 'mt-5' : '' }} mb-2">
+                        {{ Auth::user()?->role === 'kasir' ? 'Stasiun Kasir' : 'Operasional' }}
+                    </p>
 
                     <a href="{{ route('admin.cashier.index') }}" 
                        class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.cashier.*') ? 'bg-amber-600 text-white shadow-md shadow-amber-600/25' : 'text-cream-300 hover:bg-espresso-850 hover:text-white' }}">
                         <i class="fa-solid fa-cash-register w-4 text-center {{ request()->routeIs('admin.cashier.*') ? 'text-white' : 'text-amber-500' }}"></i>
-                        <span>Kasir (Monitor)</span>
+                        <span>{{ Auth::user()?->role === 'kasir' ? 'Kasir & Pembayaran' : 'Kasir (Monitor)' }}</span>
                     </a>
 
                     <a href="{{ route('admin.kitchen.index') }}" 
@@ -157,6 +141,29 @@
                         <span>KDS Barista (Dapur)</span>
                     </a>
 
+                    <a href="{{ route('admin.tables.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.tables.*') ? 'bg-amber-600 text-white shadow-md shadow-amber-600/25' : 'text-cream-300 hover:bg-espresso-850 hover:text-white' }}">
+                        <i class="fa-solid fa-qrcode w-4 text-center {{ request()->routeIs('admin.tables.*') ? 'text-white' : 'text-amber-500' }}"></i>
+                        <span>Meja & QR Code</span>
+                    </a>
+
+                    <p class="px-3 text-[10px] font-extrabold tracking-wider text-espresso-400 uppercase mt-5 mb-2">Katalog & Menu</p>
+
+                    @if(Auth::user()?->role === 'admin')
+                    <a href="{{ route('admin.categories.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.categories.*') ? 'bg-amber-600 text-white shadow-md shadow-amber-600/25' : 'text-cream-300 hover:bg-espresso-850 hover:text-white' }}">
+                        <i class="fa-solid fa-tags w-4 text-center {{ request()->routeIs('admin.categories.*') ? 'text-white' : 'text-amber-500' }}"></i>
+                        <span>Kategori Menu</span>
+                    </a>
+                    @endif
+
+                    <a href="{{ route('admin.menus.index') }}" 
+                       class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all {{ request()->routeIs('admin.menus.*') ? 'bg-amber-600 text-white shadow-md shadow-amber-600/25' : 'text-cream-300 hover:bg-espresso-850 hover:text-white' }}">
+                        <i class="fa-solid fa-utensils w-4 text-center {{ request()->routeIs('admin.menus.*') ? 'text-white' : 'text-amber-500' }}"></i>
+                        <span>{{ Auth::user()?->role === 'kasir' ? 'Katalog Menu & Stok' : 'Menu & Varian' }}</span>
+                    </a>
+
+                    @if(Auth::user()?->role === 'admin')
                     <p class="px-3 text-[10px] font-extrabold tracking-wider text-espresso-400 uppercase mt-5 mb-2">Laporan</p>
 
                     <a href="{{ route('admin.reports.index') }}" 
@@ -164,6 +171,7 @@
                         <i class="fa-solid fa-file-invoice-dollar w-4 text-center {{ request()->routeIs('admin.reports.*') ? 'text-white' : 'text-amber-500' }}"></i>
                         <span>Laporan Penjualan</span>
                     </a>
+                    @endif
                 </nav>
 
                 <!-- User profile & Logout -->
@@ -204,17 +212,22 @@
                     <span class="font-black text-sm tracking-tight text-white">Brader Cafe</span>
                 </div>
                 <div class="flex items-center gap-1.5 text-xs">
+                    @if(Auth::user()?->role === 'admin')
                     <a href="{{ route('admin.dashboard') }}" class="p-2 text-cream-300 hover:text-white" title="Dashboard">
                         <i class="fa-solid fa-chart-pie"></i>
+                    </a>
+                    @endif
+                    <a href="{{ route('admin.cashier.index') }}" class="p-2 {{ request()->routeIs('admin.cashier.*') ? 'text-amber-400' : 'text-cream-300 hover:text-white' }}" title="Kasir">
+                        <i class="fa-solid fa-cash-register"></i>
                     </a>
                     <a href="{{ route('admin.kitchen.index') }}" class="p-2 text-amber-400 hover:text-amber-300" title="KDS Barista">
                         <i class="fa-solid fa-fire-burner"></i>
                     </a>
-                    <a href="{{ route('admin.menus.index') }}" class="p-2 text-cream-300 hover:text-white" title="Menu">
-                        <i class="fa-solid fa-utensils"></i>
-                    </a>
                     <a href="{{ route('admin.tables.index') }}" class="p-2 text-cream-300 hover:text-white" title="Meja">
                         <i class="fa-solid fa-qrcode"></i>
+                    </a>
+                    <a href="{{ route('admin.menus.index') }}" class="p-2 text-cream-300 hover:text-white" title="Menu">
+                        <i class="fa-solid fa-utensils"></i>
                     </a>
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
