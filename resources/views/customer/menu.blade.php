@@ -91,11 +91,11 @@
                 <div class="grid grid-cols-2 gap-3.5">
                     @foreach($category->menus as $menu)
                     <div x-show="matchesSearch({{ $menu->id }})"
-                         class="group bg-white rounded-2xl border border-cream-200/80 shadow-xs hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col relative {{ $menu->is_available ? 'cursor-pointer' : 'opacity-75' }}"
+                         class="group bg-white rounded-2xl border border-cream-200/80 shadow-xs hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col h-full relative {{ $menu->is_available ? 'cursor-pointer' : 'opacity-75' }}"
                          @click="{{ $menu->is_available ? 'openMenu(allMenus['.$menu->id.'])' : '' }}">
                         
                         <!-- Thumbnail Image Area -->
-                        <div class="aspect-4/3 w-full bg-cream-200/70 relative overflow-hidden">
+                        <div class="aspect-square w-full bg-cream-200/70 relative overflow-hidden">
                             @if($menu->image_url)
                                 <img src="{{ $menu->image_url }}" alt="{{ $menu->name }}" 
                                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 {{ !$menu->is_available ? 'grayscale contrast-75' : '' }}">
