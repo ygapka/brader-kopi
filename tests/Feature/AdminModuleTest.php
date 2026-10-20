@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\Category;
+use App\Models\Menu;
+use App\Models\Order;
 use App\Models\Table;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -89,9 +91,34 @@ class AdminModuleTest extends TestCase
 
     public function test_owner_can_access_owner_portal(): void
     {
+        $category = Category::firstOrCreate(['slug' => 'kopi-test'], ['name' => 'Kopi Test']);
+        $menu = Menu::create([
+            'category_id' => $category->id,
+            'name' => 'Kopi Aren Spesial',
+            'price' => 20000,
+            'image' => 'https://images.unsplash.com/photo-1541167760496-1628856ab772',
+            'is_available' => true,
+        ]);
+        $table = Table::firstOrCreate(['table_number' => 'Meja 01'], ['token' => 'tokentest123', 'is_active' => true]);
+        $order = Order::create([
+            'order_number' => 'ORD-TEST-99',
+            'table_id' => $table->id,
+            'customer_name' => 'Budi',
+            'customer_whatsapp' => '081234567890',
+            'total_amount' => 20000,
+            'status' => 'paid',
+        ]);
+        $order->items()->create([
+            'menu_id' => $menu->id,
+            'quantity' => 2,
+            'price' => 20000,
+        ]);
+
         $response = $this->actingAs($this->owner)->get('/admin/owner');
         $response->assertStatus(200);
         $response->assertSee('Portal Pemilik');
+        $response->assertSee('Kopi Aren Spesial');
+        $response->assertSee('https://images.unsplash.com/photo-1541167760496-1628856ab772');
     }
 
     public function test_owner_login_redirects_to_owner_portal(): void

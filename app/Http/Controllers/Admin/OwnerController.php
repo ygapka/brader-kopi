@@ -131,6 +131,16 @@ class OwnerController extends Controller
             ->limit(5)
             ->get();
 
+        foreach ($topMenus as $menuItem) {
+            if ($menuItem->image) {
+                $menuItem->image_url = (str_starts_with($menuItem->image, 'http://') || str_starts_with($menuItem->image, 'https://'))
+                    ? $menuItem->image
+                    : asset('storage/'.$menuItem->image);
+            } else {
+                $menuItem->image_url = null;
+            }
+        }
+
         // 5. Kontribusi Penjualan per Kategori Menu
         $categorySales = OrderItem::query()
             ->join('orders', 'order_items.order_id', '=', 'orders.id')

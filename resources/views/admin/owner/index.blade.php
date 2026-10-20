@@ -340,8 +340,21 @@
 
                         <!-- Menu Image or Icon -->
                         <div class="w-10 h-10 rounded-xl bg-espresso-900/10 flex items-center justify-center overflow-hidden shrink-0 border border-cream-200">
-                            @if($item->image)
-                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" class="w-full h-full object-cover">
+                            @php
+                                $imageUrl = $item->image_url ?? null;
+                                if (! $imageUrl && ! empty($item->image)) {
+                                    $imageUrl = (str_starts_with($item->image, 'http://') || str_starts_with($item->image, 'https://'))
+                                        ? $item->image
+                                        : asset('storage/'.$item->image);
+                                }
+                            @endphp
+                            @if($imageUrl)
+                                <img src="{{ $imageUrl }}" alt="{{ $item->name }}" 
+                                     class="w-full h-full object-cover"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display: none;" class="w-full h-full items-center justify-center bg-cream-200 text-amber-700">
+                                    <i class="fa-solid fa-mug-hot"></i>
+                                </div>
                             @else
                                 <i class="fa-solid fa-mug-hot text-amber-700"></i>
                             @endif
