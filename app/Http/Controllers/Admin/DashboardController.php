@@ -8,12 +8,17 @@ use App\Models\Menu;
 use App\Models\Order;
 use App\Models\Table;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
+        if (auth()->user()?->role === 'owner') {
+            return redirect()->route('admin.owner.index');
+        }
+
         if (auth()->user()?->role !== 'admin') {
             abort(403, 'Akses dashboard hanya untuk Administrator.');
         }

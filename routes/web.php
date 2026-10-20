@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\KitchenController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\OwnerController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Auth\LoginController;
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     if (Auth::check()) {
         return match (Auth::user()?->role) {
+            'owner' => redirect()->route('admin.owner.index'),
             'kasir' => redirect()->route('admin.cashier.index'),
             'dapur' => redirect()->route('admin.kitchen.index'),
             default => redirect()->route('admin.dashboard'),
@@ -62,6 +64,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     Route::get('kitchen', [KitchenController::class, 'index'])->name('kitchen.index');
     Route::patch('kitchen/{order}/status', [KitchenController::class, 'updateStatus'])->name('kitchen.status');
+
+    // Portal Eksekutif Pemilik (Owner)
+    Route::get('owner', [OwnerController::class, 'index'])->name('owner.index');
 
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 });

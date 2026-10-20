@@ -17,6 +17,7 @@ class LoginController extends Controller
     {
         if (Auth::check()) {
             return match (Auth::user()?->role) {
+                'owner' => redirect()->route('admin.owner.index'),
                 'kasir' => redirect()->route('admin.cashier.index'),
                 'dapur' => redirect()->route('admin.kitchen.index'),
                 default => redirect()->route('admin.dashboard'),
@@ -47,6 +48,7 @@ class LoginController extends Controller
 
             $user = Auth::user();
             $targetRoute = match ($user?->role) {
+                'owner' => route('admin.owner.index'),
                 'kasir' => route('admin.cashier.index'),
                 'dapur' => route('admin.kitchen.index'),
                 default => route('admin.dashboard'),

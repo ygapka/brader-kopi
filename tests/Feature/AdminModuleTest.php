@@ -18,6 +18,8 @@ class AdminModuleTest extends TestCase
 
     protected User $kasir;
 
+    protected User $owner;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -37,6 +39,15 @@ class AdminModuleTest extends TestCase
                 'name' => 'Kasir Test',
                 'password' => bcrypt('password'),
                 'role' => 'kasir',
+            ]
+        );
+
+        $this->owner = User::firstOrCreate(
+            ['email' => 'owner@bradercafe.com'],
+            [
+                'name' => 'Owner Test',
+                'password' => bcrypt('password'),
+                'role' => 'owner',
             ]
         );
     }
@@ -74,6 +85,48 @@ class AdminModuleTest extends TestCase
     {
         $response = $this->actingAs($this->kasir)->get('/');
         $response->assertRedirect(route('admin.cashier.index'));
+    }
+
+    public function test_owner_can_access_owner_portal(): void
+    {
+        $response = $this->actingAs($this->owner)->get('/admin/owner');
+        $response->assertStatus(200);
+        $response->assertSee('Portal Pemilik');
+    }
+
+    public function test_owner_login_redirects_to_owner_portal(): void
+    {
+        $response = $this->post('/login', [
+            'email' => 'owner@bradercafe.com',
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect(route('admin.owner.index'));
+    }
+
+    public function test_owner_visiting_home_redirects_to_owner_portal(): void
+    {
+        $response = $this->actingAs($this->owner)->get('/');
+        $response->assertRedirect(route('admin.owner.index'));
+    }
+
+    public function test_owner_visiting_admin_redirects_to_owner_portal(): void
+    {
+        $response = $this->actingAs($this->owner)->get('/admin');
+        $response->assertRedirect(route('admin.owner.index'));
+    }
+
+    public function test_kasir_cannot_access_owner_portal(): void
+    {
+        $response = $this->actingAs($this->kasir)->get('/admin/owner');
+        $response->assertStatus(403);
+    }
+
+    public function test_admin_can_access_owner_portal(): void
+    {
+        $response = $this->actingAs($this->admin)->get('/admin/owner');
+        $response->assertStatus(200);
+        $response->assertSee('Portal Pemilik');
     }
 
     public function test_admin_can_access_dashboard(): void
