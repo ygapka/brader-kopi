@@ -24,3 +24,27 @@
     --color-espresso-400: #B28768;
     --color-espresso-300: #D5B5A4;
 }
+
+@utility no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #DEC9B0;
+    border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #B28768;
+}

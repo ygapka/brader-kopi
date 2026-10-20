@@ -67,6 +67,33 @@
             background-color: #FAF6F0;
             color: #261810;
         }
+
+        /* Hide scrollbar completely while maintaining scroll functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        /* Sleek modern scrollbars for other parts of the application */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #DEC9B0;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #B28768;
+        }
     </style>
     @stack('styles')
 </head>
@@ -85,8 +112,8 @@
                 </div>
             </div>
 
-            <!-- Navigation Links -->
-            <div class="flex-1 flex flex-col justify-between overflow-y-auto px-4 py-5">
+            <!-- Navigation Links (Scrollbar hidden) -->
+            <div class="flex-1 flex flex-col justify-between overflow-y-auto no-scrollbar px-4 py-5">
                 <nav class="space-y-1.5">
                     <p class="px-3 text-[10px] font-extrabold tracking-wider text-espresso-400 uppercase mb-2">Utama</p>
                     
